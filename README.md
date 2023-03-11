@@ -27,9 +27,9 @@ source venv/bin/activate
 3. Rename `.env.example` to `.env` and place your secrets accordingly
 
 ```bash
-CLIENT_ID=219280465
-ACCESS_TOKEN=place_your_token_here
-GROUP_ID=219280465
+VK_CLIENT_ID=219280465
+VK_ACCESS_TOKEN=place_your_token_here
+VK_GROUP_ID=219280465
 
 ```
 
