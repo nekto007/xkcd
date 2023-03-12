@@ -18,10 +18,10 @@ def get_upload_url(token, group_id):
 
     response = requests.get(url=url, params=params)
     response.raise_for_status()
-    response_object = response.json()
-    raise_for_vk_error(response_object)
+    response_upload_url = response.json()
+    raise_for_vk_error(response_upload_url)
 
-    upload_url = response_object["response"]["upload_url"]
+    upload_url = response_upload_url["response"]["upload_url"]
 
     return upload_url
 
@@ -33,13 +33,13 @@ def upload_photo(token: str, upload_url: str, filename: str) -> dict:
         response = requests.post(url=upload_url, params=params, files=files)
 
     response.raise_for_status()
-    response_object = response.json()
-    raise_for_vk_error(response_object)
+    response_photo_metadata = response.json()
+    raise_for_vk_error(response_photo_metadata)
 
-    return response_object
+    return response_photo_metadata
 
 
-def save_photo(token: str, photo: str, server: str, hash: str, group_id: int) -> tuple[int, int]:
+def save_photo(token, photo, server, upload_hash, group_id):
     url = f"{VK_API_URL}/photos.saveWallPhoto"
     params = {
         "access_token": token,
@@ -47,15 +47,15 @@ def save_photo(token: str, photo: str, server: str, hash: str, group_id: int) ->
         "group_id": group_id,
         "photo": photo,
         "server": server,
-        "hash": hash,
+        "hash": upload_hash,
     }
 
     response = requests.post(url=url, params=params)
     response.raise_for_status()
-    response_object = response.json()
-    raise_for_vk_error(response_object)
+    response_file_metadata = response.json()
+    raise_for_vk_error(response_file_metadata)
 
-    saved_file_metadata = response_object["response"][0]  # ["resonse"] length == 1
+    saved_file_metadata = response_file_metadata["response"][0]  # ["resonse"] length == 1
     photo_id = saved_file_metadata["id"]
     owner_id = saved_file_metadata["owner_id"]
 
@@ -77,10 +77,10 @@ def publish_wall_post(
 
     response = requests.post(url=url, params=params)
     response.raise_for_status()
-    response_object = response.json()
-    raise_for_vk_error(response_object)
+    response_post_metadata = response.json()
+    raise_for_vk_error(response_post_metadata)
 
-    post_id = response_object["response"]["post_id"]
+    post_id = response_post_metadata["response"]["post_id"]
     return post_id
 
 

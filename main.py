@@ -12,10 +12,10 @@ def main():
     token = os.getenv("VK_ACCESS_TOKEN")
     group_id = int(os.getenv("VK_GROUP_ID"))
     random_comics_id = random.randint(1, xkcd.get_last_comics_id())
-    get_comics_metadata = xkcd.get_comics_metadata(random_comics_id)
+    comics_metadata = xkcd.get_comics_metadata(random_comics_id)
     try:
-        title = get_comics_metadata['title']
-        filename = xkcd.fetch_comics_image(get_comics_metadata['img'])
+        title = comics_metadata['title']
+        filename = xkcd.fetch_comics_image(comics_metadata['img'])
         upload_server_url = vk.get_upload_url(token, group_id)
         upload_params = vk.upload_photo(token, upload_server_url, filename)
         photo_id, owner_id = vk.save_photo(token, upload_params["photo"], upload_params["server"],
